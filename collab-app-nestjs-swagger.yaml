@@ -1,0 +1,285 @@
+openapi: 3.0.0
+info:
+  title: Collab App - NestJS
+  version: 1.0.0
+servers:
+  - url: http://{{url}}
+components:
+  securitySchemes:
+    noauthAuth:
+      type: http
+      scheme: noauth
+tags:
+  - name: Authentication
+  - name: Services
+  - name: Collaborations
+  - name: Messages
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: seller@email.com
+                password: '123456'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users:
+    post:
+      tags:
+        - Authentication
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Seller
+                email: seller@email.com
+                password: '123456'
+                role: seller
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/profile:
+    get:
+      tags:
+        - Authentication
+      summary: Get Profile
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /services:
+    get:
+      tags:
+        - Services
+      summary: Get All Services
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Services
+      summary: Create New Service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: service one
+                description: this is service one
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /collaborations:
+    post:
+      tags:
+        - Collaborations
+      summary: Create New Collaboration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                serviceId: 5bd1268c-3ec7-4478-8f1f-e41a045d0d0b
+                sellerId: fef0cc2b-93e9-4fd2-9cda-2be58802591f
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /collaborations/{id}/status:
+    patch:
+      tags:
+        - Collaborations
+      summary: Change Collaboration Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: accepted
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 226ad5fc-3eae-4b9c-a1ab-6d03e68067ac
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /collaborations/{id}:
+    get:
+      tags:
+        - Collaborations
+      summary: Get Collaboration
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+          example: af69f24e-1b1b-49e9-aa8b-f0b3abaa1f70
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /messages/collaboration/{collaborationId}:
+    get:
+      tags:
+        - Messages
+      summary: Get Collaboration All Messages
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+        - name: collaborationId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: af69f24e-1b1b-49e9-aa8b-f0b3abaa1f70
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /messages:
+    post:
+      tags:
+        - Messages
+      summary: Send Message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                collaborationId: af69f24e-1b1b-49e9-aa8b-f0b3abaa1f70
+                content: Hello, this is a second message from buyer side
+                type: text
+      security:
+        - noauthAuth: []
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{authToken}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

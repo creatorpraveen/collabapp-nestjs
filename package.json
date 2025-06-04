@@ -1,8 +1,8 @@
 {
   "name": "collabapp",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A collab app created using nests",
+  "author": "Praveen Kumar",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
